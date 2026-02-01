@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Just For You</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  height:100vh;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#ffe6f0,#fff1f7);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+/* CARD */
+.card{
+  background:white;
+  width:90%;
+  max-width:400px;
+  max-height:85vh;            /* KEY FIX */
+  padding:28px;
+  border-radius:22px;
+  text-align:center;
+  box-shadow:0 14px 35px rgba(255,153,204,0.28);
+  z-index:2;
+  overflow-y:auto;            /* KEY FIX */
+  scrollbar-width:thin;
+}
+
+/* Scrollbar (Chrome) */
+.card::-webkit-scrollbar{
+  width:6px;
+}
+.card::-webkit-scrollbar-thumb{
+  background:#ffd1e6;
+  border-radius:10px;
+}
+
+h2{
+  color:#ff6fae;
+  font-weight:600;
+  margin-top:0;
+}
+
+p{
+  color:#111;
+  font-size:15px;
+  line-height:1.8;
+  font-weight:400;
+}
+
+/* BUTTONS */
+button{
+  padding:10px 24px;
+  border:none;
+  border-radius:16px;
+  font-size:14px;
+  font-family:'Poppins',sans-serif;
+  cursor:pointer;
+  background:#ff9acb;
+  color:white;
+  font-weight:500;
+  box-shadow:0 6px 18px rgba(255,154,203,0.45);
+}
+
+.buttons{
+  position:relative;
+  height:60px;
+  margin-top:18px;
+}
+
+#no{
+  position:absolute;
+  background:#f0bfd6;
+}
+
+/* UTIL */
+.hidden{display:none;}
+
+.final{
+  font-size:18px;
+  color:#111;
+  font-weight:500;
+  line-height:1.7;
+}
+
+/* FLOATING HEARTS */
+.heart{
+  position:absolute;
+  bottom:-20px;
+  color:#ff9acb;
+  font-size:16px;
+  opacity:0.75;
+  animation:float 6s linear forwards;
+}
+
+@keyframes float{
+  0%{transform:translateY(0) scale(1);opacity:0;}
+  20%{opacity:0.8;}
+  100%{transform:translateY(-110vh) scale(1.4);opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div class="card" id="page0">
+  <h2>Hiiii 👋</h2>
+  <p>
+    This is a very small website.<br>
+    Made for one person only.<br><br>
+    No names.<br>
+    No expectations.<br>
+    Just something gentle 💗
+  </p>
+  <button onclick="show(1)">Continue ✨</button>
+</div>
+
+<!-- CONFESSION -->
+<div class="card hidden" id="page1">
+  <h2>Hiiiiii 👋</h2>
+  <p>
+    I’m someone who likes you.<br>
+    You might not know me —<br>
+    and maybe that’s what makes this feel a little special.<br><br>
+
+    I don’t know how or when it started,<br>
+    but somewhere along the way,<br>
+    you became one of those people<br>
+    who can make a day feel lighter<br>
+    just by existing.<br><br>
+
+    I just wanted to tell you something honest…<br>
+    I find you veryyy cuteee 🥺<br><br>
+
+    Not just the obvious kind of cute —<br>
+    but the quiet kind.<br>
+    The kind that makes someone smile<br>
+    without realizing it,<br>
+    the kind that stays in thoughts<br>
+    longer than expected.<br><br>
+
+    This isn’t a confession<br>
+    that asks for anything in return.<br>
+    It’s just a gentle moment<br>
+    where someone chose to be brave<br>
+    enough to tell you<br>
+    that you’re special in your own way 💕<br><br>
+
+    If you’re smiling right now,<br>
+    or even feeling a little warmer,<br>
+    then this little website<br>
+    did exactly what it was meant to do 🤍
+  </p>
+
+  <b style="color:#111;">Did you like this message?</b>
+
+  <div class="buttons">
+    <button onclick="show(2)">Yes 😊</button>
+    <button id="no">No 🙈</button>
+  </div>
+</div>
+
+<!-- FINAL -->
+<div class="card hidden" id="page2">
+  <p class="final">
+    Somewhere, someone smiled a lot<br>
+    while making this…<br>
+    just hoping you would too 🤍
+  </p>
+</div>
+
+<script>
+const pages=[
+  document.getElementById("page0"),
+  document.getElementById("page1"),
+  document.getElementById("page2")
+];
+
+function show(n){
+  pages.forEach(p=>p.classList.add("hidden"));
+  pages[n].classList.remove("hidden");
+}
+
+/* NO BUTTON */
+const noBtn=document.getElementById("no");
+noBtn.addEventListener("mouseover",()=>{
+  noBtn.style.left=Math.random()*240+"px";
+  noBtn.style.top=Math.random()*40+"px";
+});
+
+/* FLOATING HEARTS */
+function heart(){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="❤";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=(Math.random()*10+14)+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+}
+setInterval(heart,450);
+</script>
+
+</body>
+</html>
+
+
+
