@@ -2,217 +2,268 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Just For You</title>
+<title>Just Something Gentle</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box;}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
 
 body{
-  margin:0;
-  height:100vh;
-  font-family:'Poppins',sans-serif;
-  background:linear-gradient(135deg,#ffe6f0,#fff1f7);
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  min-height:100vh;
+  background:linear-gradient(135deg,#ffd6e8,#ffeef6);
   overflow:hidden;
 }
 
-/* CARD */
+/* BACKGROUND */
+.bg{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+.bg span{
+  position:absolute;
+  font-size:20px;
+  animation:floatBg 14s linear infinite;
+  opacity:.8;
+}
+@keyframes floatBg{
+  from{transform:translateY(110vh);}
+  to{transform:translateY(-130vh);}
+}
+
+/* PAGE */
+.page{
+  position:absolute;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  padding:14px;
+  z-index:1;
+}
+.page.active{display:flex;}
+
+/* CARD — SMALL, NO COLUMN */
 .card{
-  background:white;
-  width:90%;
-  max-width:400px;
-  max-height:85vh;            /* KEY FIX */
-  padding:28px;
-  border-radius:22px;
-  text-align:center;
-  box-shadow:0 14px 35px rgba(255,153,204,0.28);
-  z-index:2;
-  overflow-y:auto;            /* KEY FIX */
-  scrollbar-width:thin;
+  background:rgba(255,255,255,.97);
+  padding:18px;
+  border-radius:18px;
+  box-shadow:0 10px 25px rgba(0,0,0,.15);
+  animation:fadeUp .6s ease;
+  max-width:360px;
 }
 
-/* Scrollbar (Chrome) */
-.card::-webkit-scrollbar{
-  width:6px;
-}
-.card::-webkit-scrollbar-thumb{
-  background:#ffd1e6;
-  border-radius:10px;
+/* SCROLL ONLY PAGE 2 */
+#page2 .card{
+  max-height:80vh;
+  overflow-y:auto;
 }
 
-h2{
-  color:#ff6fae;
-  font-weight:600;
-  margin-top:0;
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(14px);}
+  to{opacity:1; transform:translateY(0);}
 }
 
 p{
-  color:#111;
-  font-size:15px;
-  line-height:1.8;
-  font-weight:400;
+  font-size:14.5px;
+  line-height:1.65;
+  color:#333;
 }
 
-/* BUTTONS */
+h2{
+  text-align:center;
+  margin-bottom:6px;
+}
+
 button{
-  padding:10px 24px;
+  margin:10px 6px 0;
+  padding:8px 22px;
   border:none;
-  border-radius:16px;
-  font-size:14px;
-  font-family:'Poppins',sans-serif;
-  cursor:pointer;
-  background:#ff9acb;
+  border-radius:20px;
+  background:#ff6fa5;
   color:white;
-  font-weight:500;
-  box-shadow:0 6px 18px rgba(255,154,203,0.45);
+  font-size:14px;
+  cursor:pointer;
 }
 
-.buttons{
+.no-btn{
+  background:#ddd;
+  color:#333;
   position:relative;
-  height:60px;
+}
+
+/* BUTTON CONTAINER (BOTTOM) */
+.choice{
+  text-align:center;
   margin-top:18px;
 }
 
-#no{
-  position:absolute;
-  background:#f0bfd6;
+/* HEART + GLITTER */
+.blast-heart{
+  position:fixed;
+  left:50%;
+  top:50%;
+  font-size:22px;
+  animation:blast .9s ease-out forwards;
+  pointer-events:none;
+  z-index:5;
+}
+.sparkle{
+  position:fixed;
+  left:50%;
+  top:50%;
+  width:5px;
+  height:5px;
+  background:radial-gradient(circle,#fff,#ffd1e8);
+  border-radius:50%;
+  animation:sparkleBlast .9s ease-out forwards;
+  pointer-events:none;
+  z-index:6;
 }
 
-/* UTIL */
-.hidden{display:none;}
-
-.final{
-  font-size:18px;
-  color:#111;
-  font-weight:500;
-  line-height:1.7;
+@keyframes blast{
+  to{
+    transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y)));
+    opacity:0;
+  }
 }
-
-/* FLOATING HEARTS */
-.heart{
-  position:absolute;
-  bottom:-20px;
-  color:#ff9acb;
-  font-size:16px;
-  opacity:0.75;
-  animation:float 6s linear forwards;
-}
-
-@keyframes float{
-  0%{transform:translateY(0) scale(1);opacity:0;}
-  20%{opacity:0.8;}
-  100%{transform:translateY(-110vh) scale(1.4);opacity:0;}
+@keyframes sparkleBlast{
+  to{
+    transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y)));
+    opacity:0;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- INTRO -->
-<div class="card" id="page0">
-  <h2>Hiiii 👋</h2>
-  <p>
-    This is a very small website.<br>
-    Made for one person only.<br><br>
-    No names.<br>
-    No expectations.<br>
-    Just something gentle 💗
-  </p>
-  <button onclick="show(1)">Continue ✨</button>
-</div>
+<div class="bg" id="bg"></div>
 
-<!-- CONFESSION -->
-<div class="card hidden" id="page1">
-  <h2>Hiiiiii 👋</h2>
-  <p>
-    I’m someone who likes you.<br>
-    You might not know me —<br>
-    and maybe that’s what makes this feel a little special.<br><br>
-
-    I don’t know how or when it started,<br>
-    but somewhere along the way,<br>
-    you became one of those people<br>
-    who can make a day feel lighter<br>
-    just by existing.<br><br>
-
-    I just wanted to tell you something honest…<br>
-    I find you veryyy cuteee 🥺<br><br>
-
-    Not just the obvious kind of cute —<br>
-    but the quiet kind.<br>
-    The kind that makes someone smile<br>
-    without realizing it,<br>
-    the kind that stays in thoughts<br>
-    longer than expected.<br><br>
-
-    This isn’t a confession<br>
-    that asks for anything in return.<br>
-    It’s just a gentle moment<br>
-    where someone chose to be brave<br>
-    enough to tell you<br>
-    that you’re special in your own way 💕<br><br>
-
-    If you’re smiling right now,<br>
-    or even feeling a little warmer,<br>
-    then this little website<br>
-    did exactly what it was meant to do 🤍
-  </p>
-
-  <b style="color:#111;">Did you like this message?</b>
-
-  <div class="buttons">
-    <button onclick="show(2)">Yes 😊</button>
-    <button id="no">No 🙈</button>
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+  <div class="card">
+    <h2>Hiii 👋</h2>
+    <p>
+      This is a very small website.<br><br>
+      Made for one person only.<br>
+      No names. No expectations.<br>
+      Just something honest 💗
+    </p>
+    <div class="choice">
+      <button onclick="goToPage(2)">Continue</button>
+    </div>
   </div>
 </div>
 
-<!-- FINAL -->
-<div class="card hidden" id="page2">
-  <p class="final">
-    Somewhere, someone smiled a lot<br>
-    while making this…<br>
-    just hoping you would too 🤍
-  </p>
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+  <div class="card">
+    <p>
+      Hiii…<br><br>
+
+      I finally gathered the courage to say something.
+      This is me — unfiltered.<br><br>
+
+      I know that as of now I might not be someone you wish for,
+      but I really want to be that person —
+      someone who could bring a smile on your face when you are low,
+      or simply be with you when you are at your lowest.<br><br>
+
+      I’ve been having this special feeling towards you for a long time,
+      and it was time I came to terms with it.<br><br>
+
+      If anything I ask for, it’s just a chance —
+      a chance to know each other well.<br><br>
+
+      I do have feelings for you,
+      but before you shut me down,
+      can we please be friends for a while?<br><br>
+
+      Can we know about each other more?
+      You can take your time to know me
+      and decide whether to accept me or not.<br><br>
+
+      I’m sorry to text you this way.
+      I’m just afraid of seeing you turn away from me.<br><br>
+
+      Even now, I’ll respect your decision.
+      It might hurt if you say no,
+      but please don’t look at me differently if you do 🤍
+    </p>
+
+    <!-- YES / NO AT BOTTOM -->
+    <div class="choice">
+      <button onclick="heartBlast()">Yes 💖</button>
+      <button class="no-btn" onmouseover="runAway(this)">No 🙈</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+  <div class="card">
+    <p>
+      Thank you for reading this 🤍<br><br>
+      No pressure. No rush.<br><br>
+      I just wanted to be honest —
+      and I’ll respect your choice, always 🌸
+    </p>
+  </div>
 </div>
 
 <script>
-const pages=[
-  document.getElementById("page0"),
-  document.getElementById("page1"),
-  document.getElementById("page2")
-];
-
-function show(n){
-  pages.forEach(p=>p.classList.add("hidden"));
-  pages[n].classList.remove("hidden");
+function goToPage(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page'+n).classList.add('active');
 }
 
-/* NO BUTTON */
-const noBtn=document.getElementById("no");
-noBtn.addEventListener("mouseover",()=>{
-  noBtn.style.left=Math.random()*240+"px";
-  noBtn.style.top=Math.random()*40+"px";
-});
-
-/* FLOATING HEARTS */
-function heart(){
-  const h=document.createElement("div");
-  h.className="heart";
-  h.innerHTML="❤";
-  h.style.left=Math.random()*100+"vw";
-  h.style.fontSize=(Math.random()*10+14)+"px";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),6000);
+function runAway(btn){
+  btn.style.transform=`translate(${Math.random()*140-70}px,${Math.random()*140-70}px)`;
 }
-setInterval(heart,450);
+
+function heartBlast(){
+  for(let i=0;i<18;i++){
+    const h=document.createElement("div");
+    h.className="blast-heart";
+    h.innerHTML="💗";
+    h.style.setProperty("--x",`${Math.random()*300-150}px`);
+    h.style.setProperty("--y",`${Math.random()*300-150}px`);
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),900);
+  }
+  for(let i=0;i<28;i++){
+    const s=document.createElement("div");
+    s.className="sparkle";
+    s.style.setProperty("--x",`${Math.random()*300-150}px`);
+    s.style.setProperty("--y",`${Math.random()*300-150}px`);
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),900);
+  }
+  setTimeout(()=>goToPage(3),800);
+}
+
+/* BACKGROUND EMOJIS */
+const bg=document.getElementById("bg");
+const emojis=["🧸","🍟","💗","✨"];
+setInterval(()=>{
+  const e=document.createElement("span");
+  e.innerHTML=emojis[Math.floor(Math.random()*emojis.length)];
+  e.style.left=Math.random()*100+"vw";
+  e.style.fontSize=(Math.random()*14+16)+"px";
+  e.style.animationDuration=(Math.random()*6+10)+"s";
+  bg.appendChild(e);
+  setTimeout(()=>e.remove(),14000);
+},700);
 </script>
 
 </body>
 </html>
-
-
-
